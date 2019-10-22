@@ -1,8 +1,8 @@
 <?php
 
-namespace PhilKra\Stores;
+namespace Zuams\Stores;
 
-use PhilKra\Events\EventBean;
+use Zuams\Events\EventBean;
 
 /**
  *
@@ -14,16 +14,16 @@ class Store implements \JsonSerializable
     /**
      * Set of Events
      *
-     * @var array of \PhilKra\Events\EventBean
+     * @var array of \Zuams\Events\EventBean
      */
     protected $store = [];
 
     /**
      * Get all Registered Errors
      *
-     * @return array of \PhilKra\Events\EventBean
+     * @return array of \Zuams\Events\EventBean
      */
-    public function list() : array
+    public function theList()
     {
         return $this->store;
     }
@@ -33,7 +33,7 @@ class Store implements \JsonSerializable
      *
      * @return bool
      */
-    public function isEmpty() : bool
+    public function isEmpty()
     {
         return empty($this->store);
     }
@@ -53,7 +53,7 @@ class Store implements \JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize()
     {
         return $this->store;
     }

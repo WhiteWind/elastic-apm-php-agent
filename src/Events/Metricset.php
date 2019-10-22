@@ -1,6 +1,6 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
 /**
  *
@@ -42,7 +42,7 @@ class Metricset extends EventBean implements \JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize()
     {
         return [
             'metricset' => [

@@ -1,9 +1,9 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
-use PhilKra\Agent;
-use PhilKra\Helper\Config;
+use Zuams\Agent;
+use Zuams\Helper\Config;
 
 /**
  *
@@ -35,7 +35,7 @@ class Metadata extends EventBean implements \JsonSerializable
      *
      * @return array
      */
-    final public function jsonSerialize(): array
+    final public function jsonSerialize()
     {
         return [
             'metadata' => [
@@ -43,8 +43,8 @@ class Metadata extends EventBean implements \JsonSerializable
                     'name'    => $this->config->get('appName'),
                     'version' => $this->config->get('appVersion'),
                     'framework' => [
-                        'name' => $this->config->get('framework') ?? '',
-                        'version' => $this->config->get('frameworkVersion') ?? '',
+                        'name' => '',
+                        'version' => '',
                     ],
                     'language' => [
                         'name'    => 'php',

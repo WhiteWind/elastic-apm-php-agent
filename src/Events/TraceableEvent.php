@@ -1,9 +1,9 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
-use PhilKra\Exception\InvalidTraceContextHeaderException;
-use PhilKra\Helper\DistributedTracing;
+use Zuams\Exception\InvalidTraceContextHeaderException;
+use Zuams\Helper\DistributedTracing;
 
 /**
  *
@@ -30,7 +30,7 @@ class TraceableEvent extends EventBean
      *
      * @return string
      */
-    public function getDistributedTracing() : string
+    public function getDistributedTracing()
     {
         return (new DistributedTracing($this->getTraceId(), $this->getParentId()))->__toString();
     }
@@ -43,7 +43,7 @@ class TraceableEvent extends EventBean
     private function setTraceContext()
     {
         // Is one of the Traceparent Headers populated ?
-        $header = $_SERVER['HTTP_ELASTIC_APM_TRACEPARENT'] ?? ($_SERVER['HTTP_TRACEPARENT'] ?? null);
+        $header = (isset($_SERVER['HTTP_ELASTIC_APM_TRACEPARENT']) ? $_SERVER['HTTP_ELASTIC_APM_TRACEPARENT'] : (isset($_SERVER['HTTP_TRACEPARENT']) ? $_SERVER['HTTP_TRACEPARENT'] : null));
         if ($header !== null && DistributedTracing::isValidHeader($header) === true) {
             try {
                 $traceParent = DistributedTracing::createFromHeader($header);

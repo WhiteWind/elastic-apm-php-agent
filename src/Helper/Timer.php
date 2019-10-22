@@ -1,10 +1,10 @@
 <?php
 
-namespace PhilKra\Helper;
+namespace Zuams\Helper;
 
-use PhilKra\Exception\Timer\AlreadyRunningException;
-use PhilKra\Exception\Timer\NotStartedException;
-use PhilKra\Exception\Timer\NotStoppedException;
+use Zuams\Exception\Timer\AlreadyRunningException;
+use Zuams\Exception\Timer\NotStartedException;
+use Zuams\Exception\Timer\NotStoppedException;
 
 /**
  * Timer for Duration tracing
@@ -48,7 +48,7 @@ class Timer
     /**
      * Stop the Timer
      *
-     * @throws \PhilKra\Exception\Timer\NotStartedException
+     * @throws \Zuams\Exception\Timer\NotStartedException
      *
      * @return void
      */
@@ -64,11 +64,11 @@ class Timer
     /**
      * Get the elapsed Duration of this Timer in MicroSeconds
      *
-     * @throws \PhilKra\Exception\Timer\NotStoppedException
+     * @throws \Zuams\Exception\Timer\NotStoppedException
      *
      * @return float
      */
-    public function getDuration() : float
+    public function getDuration()
     {
         if ($this->stoppedOn === null) {
             throw new NotStoppedException();
@@ -80,11 +80,11 @@ class Timer
     /**
      * Get the elapsed Duration of this Timer in MilliSeconds
      *
-     * @throws \PhilKra\Exception\Timer\NotStoppedException
+     * @throws \Zuams\Exception\Timer\NotStoppedException
      *
      * @return float
      */
-    public function getDurationInMilliseconds() : float
+    public function getDurationInMilliseconds()
     {
         if ($this->stoppedOn === null) {
             throw new NotStoppedException();
@@ -96,11 +96,11 @@ class Timer
     /**
      * Get the current elapsed Interval of the Timer in MicroSeconds
      *
-     * @throws \PhilKra\Exception\Timer\NotStartedException
+     * @throws \Zuams\Exception\Timer\NotStartedException
      *
      * @return float
      */
-    public function getElapsed() : float
+    public function getElapsed()
     {
         if ($this->startedOn === null) {
             throw new NotStartedException();
@@ -114,11 +114,11 @@ class Timer
     /**
      * Get the current elapsed Interval of the Timer in MilliSeconds
      *
-     * @throws \PhilKra\Exception\Timer\NotStartedException
+     * @throws \Zuams\Exception\Timer\NotStartedException
      *
      * @return float
      */
-    public function getElapsedInMilliseconds() : float
+    public function getElapsedInMilliseconds()
     {
         if ($this->startedOn === null) {
             throw new NotStartedException();
@@ -136,7 +136,7 @@ class Timer
      *
      * @return float
      */
-    private function toMicro(float $num) : float
+    private function toMicro(float $num)
     {
         return $num * 1000000;
     }
@@ -148,7 +148,7 @@ class Timer
      *
      * @return float
      */
-    private function toMilli(float $num) : float
+    private function toMilli(float $num)
     {
         return $num * 1000;
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace PhilKra\Middleware;
+namespace Zuams\Middleware;
 
-use PhilKra\Agent;
-use PhilKra\Events\EventBean;
-use PhilKra\Stores\TransactionsStore;
+use Zuams\Agent;
+use Zuams\Events\EventBean;
+use Zuams\Stores\TransactionsStore;
 use GuzzleHttp\Client;
 
 /**
@@ -17,7 +17,7 @@ class Connector
     /**
      * Agent Config
      *
-     * @var \PhilKra\Helper\Config
+     * @var \Zuams\Helper\Config
      */
     private $config;
 
@@ -32,9 +32,9 @@ class Connector
     private $payload = [];
 
     /**
-     * @param \PhilKra\Helper\Config $config
+     * @param \Zuams\Helper\Config $config
      */
-    public function __construct(\PhilKra\Helper\Config $config)
+    public function __construct(\Zuams\Helper\Config $config)
     {
         $this->config = $config;
         $this->configureHttpClient();
@@ -45,7 +45,7 @@ class Connector
      *
      * @return bool
      */
-    public function isPayloadSet() : bool
+    public function isPayloadSet()
     {
         return (empty($this->payload) === false);
     }
@@ -61,7 +61,7 @@ class Connector
             'timeout' => $this->config->get('timeout'),
         ];
 
-        $httpClientConfig = $this->config->get('httpClient') ?? [];
+        $httpClientConfig = $this->config->get('httpClient') ? $httpClientConfig : [];
 
         $this->client = new Client(array_merge($httpClientDefaults, $httpClientConfig));
     }
@@ -79,7 +79,7 @@ class Connector
      *
      * @return bool
      */
-    public function commit() : bool
+    public function commit()
     {
         $body = '';
         foreach($this->payload as $line) {
@@ -100,7 +100,7 @@ class Connector
      *
      * @return Response
      */
-    public function getInfo() : \GuzzleHttp\Psr7\Response
+    public function getInfo()
     {
         return $this->client->get(
             $this->config->get('serverUrl'),
@@ -115,7 +115,7 @@ class Connector
      *
      * @return string
      */
-    private function getEndpoint() : string
+    private function getEndpoint()
     {
         return sprintf('%s/intake/v2/events', $this->config->get('serverUrl'));
     }
@@ -125,7 +125,7 @@ class Connector
      *
      * @return array
      */
-    private function getRequestHeaders() : array
+    private function getRequestHeaders()
     {
         // Default Headers Set
         $headers = [

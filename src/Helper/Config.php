@@ -1,8 +1,8 @@
 <?php
 
-namespace PhilKra\Helper;
+namespace Zuams\Helper;
 
-use PhilKra\Exception\MissingAppNameException;
+use Zuams\Exception\MissingAppNameException;
 
 /**
  *
@@ -41,7 +41,7 @@ class Config
      */
     public function get(string $key, $default = null)
     {
-        return ($this->config[$key]) ?? $default;
+        return isset($this->config[$key]) ? $this->config[$key] : $default;
     }
 
     /**
@@ -49,7 +49,7 @@ class Config
      *
      * @return array
      */
-    public function asArray() : array
+    public function asArray()
     {
         return $this->config;
     }
@@ -61,7 +61,7 @@ class Config
      *
      * @return array
      */
-    private function getDefaultConfig() : array
+    private function getDefaultConfig()
     {
         return [
             'serverUrl'      => 'http://127.0.0.1:8200',

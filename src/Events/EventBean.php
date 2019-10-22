@@ -1,6 +1,6 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
 /**
  *
@@ -83,7 +83,7 @@ class EventBean
      * @param array $contexts
      * @param ?Transaction $parent
      */
-    public function __construct(array $contexts, ?Transaction $parent = null)
+    public function __construct(array $contexts, Transaction $parent = null)
     {
         // Generate Random Event Id
         $this->id = self::generateRandomBitsInHex(self::EVENT_ID_BITS);
@@ -105,7 +105,7 @@ class EventBean
      *
      * @return string
      */
-    public function getId() : string
+    public function getId()
     {
         return $this->id;
     }
@@ -115,7 +115,7 @@ class EventBean
      *
      * @return string $traceId
      */
-    public function getTraceId() : ?string
+    public function getTraceId()
     {
         return $this->traceId;
     }
@@ -145,7 +145,7 @@ class EventBean
      *
      * @return string
      */
-    final public function getParentId() : ?string
+    final public function getParentId()
     {
         return $this->parentId;
     }
@@ -155,7 +155,7 @@ class EventBean
      *
      * @return int
      */
-    final public function getParentTimestampOffset(): ?int
+    final public function getParentTimestampOffset()
     {
         return $this->parentTimestampOffset;
     }
@@ -165,7 +165,7 @@ class EventBean
      *
      * @return int
      */
-    public function getTimestamp() : int
+    public function getTimestamp()
     {
         return $this->timestamp;
     }
@@ -250,21 +250,27 @@ class EventBean
      *
      * @return array
      */
-    final public function generateRequest(): array
+    final public function generateRequest()
     {
         $headers = getallheaders();
         $http_or_https = isset($_SERVER['HTTPS']) ? 'https' : 'http';
 
         // Build Context Stub
-        $SERVER_PROTOCOL = $_SERVER['SERVER_PROTOCOL'] ?? '';
-        $remote_address = $_SERVER['REMOTE_ADDR'] ?? '';
+        $SERVER_PROTOCOL = '';
+        if (isset($_SERVER['SERVER_PROTOCOL'])) {
+            $SERVER_PROTOCOL = $_SERVER['SERVER_PROTOCOL'];
+        }
+        $remote_address = '';
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remote_address = $_SERVER['REMOTE_ADDR'];
+        }
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) === true) {
             $remote_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
 
         return [
             'http_version' => substr($SERVER_PROTOCOL, strpos($SERVER_PROTOCOL, '/')),
-            'method'       => $_SERVER['REQUEST_METHOD'] ?? 'cli',
+            'method'       => 'cli',
             'socket'       => [
                 'remote_address' => $remote_address,
                 'encrypted'      => isset($_SERVER['HTTPS'])
@@ -272,15 +278,15 @@ class EventBean
             'response' => $this->contexts['response'],
             'url'          => [
                 'protocol' => $http_or_https,
-                'hostname' => $_SERVER['SERVER_NAME'] ?? '',
-                'port'     => $_SERVER['SERVER_PORT'] ?? 0,
-                'pathname' => $_SERVER['SCRIPT_NAME'] ?? '',
-                'search'   => '?' . (($_SERVER['QUERY_STRING'] ?? '') ?? ''),
+                'hostname' => '',
+                'port'     => 0,
+                'pathname' => '',
+                'search'   => '',
                 'full' => isset($_SERVER['HTTP_HOST']) ? $http_or_https . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : '',
             ],
             'headers' => [
-                'user-agent' => $headers['User-Agent'] ?? '',
-                'cookie'     => $this->getCookieHeader($headers['Cookie'] ?? ''),
+                'user-agent' => '',
+                'cookie'     => '',
             ],
             'env' => (object)$this->getEnv(),
             'cookies' => (object)$this->getCookies(),
@@ -294,7 +300,7 @@ class EventBean
      * @return string
      * @throws \Exception
      */
-    final protected function generateRandomBitsInHex(int $bits): string
+    final protected function generateRandomBitsInHex(int $bits)
     {
         return bin2hex(random_bytes($bits/8));
     }
@@ -304,7 +310,7 @@ class EventBean
      *
      * @return string
      */
-    final protected function getMetaType() : string
+    final protected function getMetaType()
     {
         return $this->meta['type'];
     }
@@ -314,7 +320,7 @@ class EventBean
      *
      * @return string
      */
-    final protected function getMetaResult() : string
+    final protected function getMetaResult()
     {
         return (string)$this->meta['result'];
     }
@@ -328,7 +334,7 @@ class EventBean
      *
      * @return array
      */
-    final protected function getEnv() : array
+    final protected function getEnv()
     {
         $envMask = $this->contexts['env'];
         $env = empty($envMask)
@@ -346,9 +352,9 @@ class EventBean
      *
      * @return array
      */
-    final protected function getCookies() : array
+    final protected function getCookies()
     {
-        $cookieMask = $this->contexts['cookies'] ?? [];
+        $cookieMask = isset($this->contexts['cookies']) ? $this->contexts['cookies'] : [];
         return empty($cookieMask)
             ? $_COOKIE
             : array_intersect_key($_COOKIE, array_flip($cookieMask));
@@ -361,10 +367,9 @@ class EventBean
      *
      * @return string
      */
-    final protected function getCookieHeader(string $cookieHeader) : string
+    final protected function getCookieHeader(string $cookieHeader)
     {
-        $cookieMask = $this->contexts['cookies'] ?? [];
-
+        $cookieMask = isset($this->contexts['cookies']) ? $this->contexts['cookies'] : [];
         // Returns an empty string if cookies are masked.
         return empty($cookieMask) ? $cookieHeader : '';
     }
@@ -376,7 +381,7 @@ class EventBean
      *
      * @return array
      */
-    final protected function getContext() : array
+    final protected function getContext()
     {
         $context = [
             'request' => empty($this->contexts['request']) ? $this->generateRequest() : $this->contexts['request']

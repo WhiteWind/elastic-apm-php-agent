@@ -1,6 +1,6 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
 interface EventFactoryInterface
 {
@@ -12,7 +12,7 @@ interface EventFactoryInterface
      *
      * @return Error
      */
-    public function newError(\Throwable $throwable, array $contexts, ?Transaction $parent = null): Error;
+    public function newError(\Throwable $throwable, array $contexts, Transaction $parent = null);
 
     /**
      * Creates a new transaction
@@ -22,7 +22,7 @@ interface EventFactoryInterface
      *
      * @return Transaction
      */
-    public function newTransaction(string $name, array $contexts, float $start = null): Transaction;
+    public function newTransaction(string $name, array $contexts, float $start = null);
 
     /**
      * Creates a new Span
@@ -32,7 +32,7 @@ interface EventFactoryInterface
      *
      * @return Span
      */
-    public function newSpan(string $name, EventBean $parent): Span;
+    public function newSpan(string $name, EventBean $parent);
 
     /**
      * Creates a new Metricset
@@ -45,6 +45,6 @@ interface EventFactoryInterface
      *
      * @return Metricset
      */
-    public function newMetricset(array $set, array $tags = []): Metricset;
+    public function newMetricset(array $set, array $tags = []);
 
 }

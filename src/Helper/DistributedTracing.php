@@ -1,8 +1,8 @@
 <?php
 
-namespace PhilKra\Helper;
+namespace Zuams\Helper;
 
-use PhilKra\Exception\InvalidTraceContextHeaderException;
+use Zuams\Exception\InvalidTraceContextHeaderException;
 
 class DistributedTracing
 {
@@ -39,7 +39,7 @@ class DistributedTracing
      * @param string $parentId
      * @param string $traceFlags
      */
-    public function __construct(string $traceId, string $parentId, string $traceFlags = '00')
+    public function __construct($traceId, $parentId, $traceFlags = '00')
     {
         $this->traceId = $traceId;
         $this->parentId = $parentId;
@@ -65,7 +65,7 @@ class DistributedTracing
     /**
      * @return string
      */
-    public function getTraceFlags() : string
+    public function getTraceFlags()
     {
         return $this->traceFlags;
     }
@@ -87,7 +87,7 @@ class DistributedTracing
      *
      * @return bool
      */
-    public static function isValidHeader(string $header) : bool
+    public static function isValidHeader(string $header)
     {
         return preg_match('/^'.self::VERSION.'-[\da-f]{32}-[\da-f]{16}-[\da-f]{2}$/', $header) === 1;
     }

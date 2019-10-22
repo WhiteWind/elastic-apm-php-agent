@@ -1,19 +1,19 @@
 <?php
 
-namespace PhilKra;
+namespace Zuams;
 
-use PhilKra\Events\DefaultEventFactory;
-use PhilKra\Events\EventFactoryInterface;
-use PhilKra\Stores\TransactionsStore;
-use PhilKra\Events\EventBean;
-use PhilKra\Events\Error;
-use PhilKra\Events\Transaction;
-use PhilKra\Events\Metadata;
-use PhilKra\Helper\Timer;
-use PhilKra\Helper\Config;
-use PhilKra\Middleware\Connector;
-use PhilKra\Exception\Transaction\DuplicateTransactionNameException;
-use PhilKra\Exception\Transaction\UnknownTransactionException;
+use Zuams\Events\DefaultEventFactory;
+use Zuams\Events\EventFactoryInterface;
+use Zuams\Stores\TransactionsStore;
+use Zuams\Events\EventBean;
+use Zuams\Events\Error;
+use Zuams\Events\Transaction;
+use Zuams\Events\Metadata;
+use Zuams\Helper\Timer;
+use Zuams\Helper\Config;
+use Zuams\Middleware\Connector;
+use Zuams\Exception\Transaction\DuplicateTransactionNameException;
+use Zuams\Exception\Transaction\UnknownTransactionException;
 
 /**
  *
@@ -42,21 +42,21 @@ class Agent
     /**
      * Config Store
      *
-     * @var \PhilKra\Helper\Config
+     * @var \Zuams\Helper\Config
      */
     private $config;
 
     /**
      * Transactions Store
      *
-     * @var \PhilKra\Stores\TransactionsStore
+     * @var \Zuams\Stores\TransactionsStore
      */
     private $transactionsStore;
 
     /**
      * Apm Timer
      *
-     * @var \PhilKra\Helper\Timer
+     * @var \Zuams\Helper\Timer
      */
     private $timer;
 
@@ -96,12 +96,27 @@ class Agent
         $this->config = new Config($config);
 
         // Use the custom event factory or create a default one
-        $this->eventFactory = $eventFactory ?? new DefaultEventFactory();
+        if (!$eventFactory) {
+            $eventFactory = new DefaultEventFactory();
+        }
+        $this->eventFactory = $eventFactory;
 
         // Init the Shared Context
-        $this->sharedContext['user']   = $sharedContext['user'] ?? [];
-        $this->sharedContext['custom'] = $sharedContext['custom'] ?? [];
-        $this->sharedContext['tags']   = $sharedContext['tags'] ?? [];
+        if (isset($sharedContext['user'])) {
+            $this->sharedContext['user'] = $sharedContext['user'];
+        } else {
+            $this->sharedContext['user'] = [];
+        }
+        if (isset($sharedContext['custom'])) {
+            $this->sharedContext['custom'] = $sharedContext['custom'];
+        } else {
+            $this->sharedContext['custom'] = [];
+        }
+        if (isset($sharedContext['tags'])) {
+            $this->sharedContext['tags'] = $sharedContext['tags'];
+        } else {
+            $this->sharedContext['tags'] = [];
+        }
 
         // Let's misuse the context to pass the environment variable and cookies
         // config to the EventBeans and the getContext method
@@ -111,8 +126,10 @@ class Agent
         $this->sharedContext['cookies'] = $this->config->get('cookies', []);
 
         // Initialize Event Stores
-        $this->transactionsStore = $transactionsStore ?? new TransactionsStore();
-
+        if (!$transactionsStore) {
+            $transactionsStore = new TransactionsStore();
+        }
+        $this->transactionsStore = $transactionsStore;
         // Init the Transport "Layer"
         $this->connector = new Connector($this->config);
         $this->connector->putEvent(new Metadata([], $this->config));
@@ -127,7 +144,7 @@ class Agent
      *
      * @return EventFactoryInterface
      */
-    public function factory() : EventFactoryInterface
+    public function factory()
     {
         return $this->eventFactory;
     }
@@ -139,7 +156,7 @@ class Agent
      *
      * @return Response
      */
-    public function info() : \GuzzleHttp\Psr7\Response
+    public function info()
     {
         return $this->connector->getInfo();
     }
@@ -147,14 +164,14 @@ class Agent
     /**
      * Start the Transaction capturing
      *
-     * @throws \PhilKra\Exception\Transaction\DuplicateTransactionNameException
+     * @throws \Zuams\Exception\Transaction\DuplicateTransactionNameException
      *
      * @param string $name
      * @param array  $context
      *
      * @return Transaction
      */
-    public function startTransaction(string $name, array $context = [], float $start = null): Transaction
+    public function startTransaction($name, $context = [], $start = null)
     {
         // Create and Store Transaction
         $this->transactionsStore->register(
@@ -174,7 +191,7 @@ class Agent
     /**
      * Stop the Transaction
      *
-     * @throws \PhilKra\Exception\Transaction\UnknownTransactionException
+     * @throws \Zuams\Exception\Transaction\UnknownTransactionException
      *
      * @param string $name
      * @param array $meta, Def: []
@@ -191,7 +208,7 @@ class Agent
     /**
      * Get a Transaction
      *
-     * @throws \PhilKra\Exception\Transaction\UnknownTransactionException
+     * @throws \Zuams\Exception\Transaction\UnknownTransactionException
      *
      * @param string $name
      *
@@ -218,7 +235,7 @@ class Agent
      *
      * @return void
      */
-    public function captureThrowable(\Throwable $thrown, array $context = [], ?Transaction $parent = null)
+    public function captureThrowable(\Throwable $thrown, array $context = [], $parent = null)
     {
         $this->putEvent($this->factory()->newError($thrown, array_replace_recursive($this->sharedContext, $context), $parent));
     }
@@ -234,9 +251,9 @@ class Agent
     /**
      * Get the Agent Config
      *
-     * @return \PhilKra\Helper\Config
+     * @return \Zuams\Helper\Config
      */
-    public function getConfig() : \PhilKra\Helper\Config
+    public function getConfig()
     {
         return $this->config;
     }
@@ -249,7 +266,7 @@ class Agent
      *
      * @return bool
      */
-    public function send() : bool
+    public function send()
     {
         // Is the Agent enabled ?
         if ($this->config->get('active') === false) {
@@ -264,7 +281,7 @@ class Agent
         }
 
         // Start Payload commitment
-        foreach($this->transactionsStore->list() as $event) {
+        foreach($this->transactionsStore->theList() as $event) {
             $this->connector->putEvent($event);
         }
         $this->transactionsStore->reset();

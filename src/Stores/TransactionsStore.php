@@ -1,9 +1,9 @@
 <?php
 
-namespace PhilKra\Stores;
+namespace Zuams\Stores;
 
-use PhilKra\Events\Transaction;
-use PhilKra\Exception\Transaction\DuplicateTransactionNameException;
+use Zuams\Events\Transaction;
+use Zuams\Exception\Transaction\DuplicateTransactionNameException;
 
 /**
  *
@@ -15,9 +15,9 @@ class TransactionsStore extends Store
     /**
      * Register a Transaction
      *
-     * @throws \PhilKra\Exception\Transaction\DuplicateTransactionNameException
+     * @throws \Zuams\Exception\Transaction\DuplicateTransactionNameException
      *
-     * @param \PhilKra\Events\Transaction $transaction
+     * @param \Zuams\Events\Transaction $transaction
      *
      * @return void
      */
@@ -39,11 +39,11 @@ class TransactionsStore extends Store
      *
      * @param final string $name
      *
-     * @return mixed: \PhilKra\Events\Transaction | null
+     * @return mixed: \Zuams\Events\Transaction | null
      */
     public function fetch(string $name)
     {
-        return $this->store[$name] ?? null;
+        return isset($this->store[$name]) ? $this->store[$name] : null;
     }
 
     /**
@@ -51,7 +51,7 @@ class TransactionsStore extends Store
      *
      * @return array
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize()
     {
         return array_values($this->store);
     }

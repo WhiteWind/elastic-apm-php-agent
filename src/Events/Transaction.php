@@ -1,8 +1,8 @@
 <?php
 
-namespace PhilKra\Events;
+namespace Zuams\Events;
 
-use PhilKra\Helper\Timer;
+use Zuams\Helper\Timer;
 
 /**
  *
@@ -21,7 +21,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     private $name;
 
     /**
-     * @var \PhilKra\Helper\Timer
+     * @var \Zuams\Helper\Timer
      */
     private $timer;
 
@@ -77,7 +77,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
         $this->timer->stop();
 
         // Store Summary
-        $this->summary['duration']  = $duration ?? round($this->timer->getDurationInMilliseconds(), 3);
+        $this->summary['duration']  = $duration ? $duration : round($this->timer->getDurationInMilliseconds(), 3);
         $this->summary['headers']   = (function_exists('xdebug_get_headers') === true) ? xdebug_get_headers() : [];
         $this->summary['backtrace'] = debug_backtrace($this->backtraceLimit);
     }
@@ -99,7 +99,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     *
     * @return string
     */
-    public function getTransactionName() : string
+    public function getTransactionName()
     {
         return $this->name;
     }
@@ -109,7 +109,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     *
     * @return array
     */
-    public function getSummary() : array
+    public function getSummary()
     {
         return $this->summary;
     }
@@ -132,7 +132,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize()
     {
         return [
             'transaction' => [

@@ -1,19 +1,19 @@
 <?php
-namespace PhilKra\Tests\Events;
+namespace Zuams\Tests\Events;
 
-use \PhilKra\Events\Transaction;
-use PhilKra\Tests\TestCase;
+use \Zuams\Events\Transaction;
+use Zuams\Tests\TestCase;
 
 /**
- * Test Case for @see \PhilKra\Events\Transaction
+ * Test Case for @see \Zuams\Events\Transaction
  */
 final class TransactionTest extends TestCase {
 
     /**
-     * @covers \PhilKra\Events\EventBean::getId
-     * @covers \PhilKra\Events\EventBean::getTraceId
-     * @covers \PhilKra\Events\Transaction::getTransactionName
-     * @covers \PhilKra\Events\Transaction::setTransactionName
+     * @covers \Zuams\Events\EventBean::getId
+     * @covers \Zuams\Events\EventBean::getTraceId
+     * @covers \Zuams\Events\Transaction::getTransactionName
+     * @covers \Zuams\Events\Transaction::setTransactionName
      */
     public function testParentConstructor() {
         $name = 'testerus-grandes';
@@ -31,9 +31,9 @@ final class TransactionTest extends TestCase {
     /**
      * @depends testParentConstructor
      *
-     * @covers \PhilKra\Events\EventBean::setParent
-     * @covers \PhilKra\Events\EventBean::getTraceId
-     * @covers \PhilKra\Events\EventBean::ensureGetTraceId
+     * @covers \Zuams\Events\EventBean::setParent
+     * @covers \Zuams\Events\EventBean::getTraceId
+     * @covers \Zuams\Events\EventBean::ensureGetTraceId
      */
     public function testParentReference() {
         $parent = new Transaction('parent', []);
