@@ -30,14 +30,14 @@ class Agent
      *
      * @var string
      */
-    const VERSION = '7.0.0-rc2';
+    const VERSION = '1.0';
 
     /**
      * Agent Name
      *
      * @var string
      */
-    const NAME = 'elasticapm-php';
+    const NAME = 'elastic-apm-php-agent';
 
     /**
      * Config Store
