@@ -2,11 +2,10 @@
     "name" : "zuams/elastic-apm-php-agent",
     "description": "A php agent for Elastic APM v2 Intake API",
     "license": "MIT",
-    "version": "1.0.0",
     "require" : {
         "php" : ">= 5.5",
         "guzzlehttp/guzzle": "6.*",
-        "ralouphie/getallheaders": "2.*",
+        "ralouphie/getallheaders": "2.0.5",
         "ext-curl" : "*",
         "ext-json": "*"
     },
