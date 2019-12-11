@@ -25,7 +25,7 @@ class Timer
      */
     private $stoppedOn = null;
 
-    public function __construct(float $startTime = null)
+    public function __construct($startTime = null)
     {
         $this->startedOn = $startTime;
     }
@@ -136,7 +136,7 @@ class Timer
      *
      * @return float
      */
-    private function toMicro(float $num)
+    private function toMicro($num)
     {
         return $num * 1000000;
     }
@@ -148,7 +148,7 @@ class Timer
      *
      * @return float
      */
-    private function toMilli(float $num)
+    private function toMilli($num)
     {
         return $num * 1000;
     }

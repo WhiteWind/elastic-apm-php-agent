@@ -47,7 +47,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     * @param string $name
     * @param array $contexts
     */
-    public function __construct(string $name, array $contexts, $start = null)
+    public function __construct($name, array $contexts, $start = null)
     {
         parent::__construct($contexts);
         $this->setTransactionName($name);
@@ -71,7 +71,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
      *
      * @return void
      */
-    public function stop(int $duration = null)
+    public function stop($duration = null)
     {
         // Stop the Timer
         $this->timer->stop();
@@ -89,7 +89,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     *
     * @return void
     */
-    public function setTransactionName(string $name)
+    public function setTransactionName($name)
     {
         $this->name = $name;
     }
@@ -122,7 +122,7 @@ class Transaction extends TraceableEvent implements \JsonSerializable
      *
      * @param int $limit
      */
-    public function setBacktraceLimit(int $limit)
+    public function setBacktraceLimit($limit)
     {
         $this->backtraceLimit = $limit;
     }

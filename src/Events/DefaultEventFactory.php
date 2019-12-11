@@ -15,7 +15,7 @@ final class DefaultEventFactory implements EventFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function newTransaction(string $name, array $contexts, float $start = null)
+    public function newTransaction($name, array $contexts, $start = null)
     {
         return new Transaction($name, $contexts, $start);
     }
@@ -23,7 +23,7 @@ final class DefaultEventFactory implements EventFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function newSpan(string $name, EventBean $parent)
+    public function newSpan($name, EventBean $parent)
     {
         return new Span($name, $parent);
     }

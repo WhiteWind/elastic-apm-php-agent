@@ -198,7 +198,7 @@ class Agent
      *
      * @return void
      */
-    public function stopTransaction(string $name, array $meta = [])
+    public function stopTransaction($name, array $meta = [])
     {
         $this->getTransaction($name)->setBacktraceLimit($this->config->get('backtraceLimit', 0));
         $this->getTransaction($name)->stop();
@@ -214,7 +214,7 @@ class Agent
      *
      * @return Transaction
      */
-    public function getTransaction(string $name)
+    public function getTransaction($name)
     {
         $transaction = $this->transactionsStore->fetch($name);
         if ($transaction === null) {

@@ -125,7 +125,7 @@ class EventBean
      *
      * @param string $traceId
      */
-    final public function setTraceId(string $traceId)
+    final public function setTraceId( $traceId)
     {
         $this->traceId = $traceId;
     }
@@ -135,7 +135,7 @@ class EventBean
      *
      * @param string $parentId
      */
-    final public function setParentId(string $parentId)
+    final public function setParentId( $parentId)
     {
         $this->parentId = $parentId;
     }
@@ -300,9 +300,11 @@ class EventBean
      * @return string
      * @throws \Exception
      */
-    final protected function generateRandomBitsInHex(int $bits)
+    final protected function generateRandomBitsInHex($bits)
     {
-        return bin2hex(random_bytes($bits/8));
+        for ($i = 0; $i < $bits/8; $i++)
+            $str .= chr(mt_rand(0, 255));
+        return bin2hex($str);
     }
 
     /**
@@ -367,7 +369,7 @@ class EventBean
      *
      * @return string
      */
-    final protected function getCookieHeader(string $cookieHeader)
+    final protected function getCookieHeader($cookieHeader)
     {
         $cookieMask = isset($this->contexts['cookies']) ? $this->contexts['cookies'] : [];
         // Returns an empty string if cookies are masked.

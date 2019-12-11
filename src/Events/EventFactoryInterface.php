@@ -22,7 +22,7 @@ interface EventFactoryInterface
      *
      * @return Transaction
      */
-    public function newTransaction(string $name, array $contexts, float $start = null);
+    public function newTransaction($name, array $contexts, $start = null);
 
     /**
      * Creates a new Span
@@ -32,7 +32,7 @@ interface EventFactoryInterface
      *
      * @return Span
      */
-    public function newSpan(string $name, EventBean $parent);
+    public function newSpan($name, EventBean $parent);
 
     /**
      * Creates a new Metricset

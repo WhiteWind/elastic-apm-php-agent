@@ -73,7 +73,7 @@ class DistributedTracing
     /**
      * @param string $traceFlags
      */
-    public function setTraceFlags(string $traceFlags)
+    public function setTraceFlags($traceFlags)
     {
         $this->traceFlags = $traceFlags;
     }
@@ -87,7 +87,7 @@ class DistributedTracing
      *
      * @return bool
      */
-    public static function isValidHeader(string $header)
+    public static function isValidHeader($header)
     {
         return preg_match('/^'.self::VERSION.'-[\da-f]{32}-[\da-f]{16}-[\da-f]{2}$/', $header) === 1;
     }
@@ -97,7 +97,7 @@ class DistributedTracing
      * @return TraceParent
      * @throws InvalidTraceContextHeaderException
      */
-    public static function createFromHeader(string $header)
+    public static function createFromHeader($header)
     {
         if (!self::isValidHeader($header)) {
             throw new InvalidTraceContextHeaderException("InvalidTraceContextHeaderException");

@@ -39,7 +39,7 @@ class Config
      *
      * @return mixed: value | null
      */
-    public function get(string $key, $default = null)
+    public function get($key, $default = null)
     {
         return isset($this->config[$key]) ? $this->config[$key] : $default;
     }

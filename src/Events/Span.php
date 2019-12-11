@@ -53,7 +53,7 @@ class Span extends TraceableEvent implements \JsonSerializable
      * @param string $name
      * @param EventBean $parent
      */
-    public function __construct(string $name, EventBean $parent)
+    public function __construct($name, EventBean $parent)
     {
         parent::__construct([]);
         $this->name  = trim($name);
@@ -78,7 +78,7 @@ class Span extends TraceableEvent implements \JsonSerializable
      *
      * @return void
      */
-    public function stop(int $duration = null)
+    public function stop($duration = null)
     {
         $this->timer->stop();
         $this->duration = ($duration) ? $duration : round($this->timer->getDurationInMilliseconds(), 3);
@@ -99,7 +99,7 @@ class Span extends TraceableEvent implements \JsonSerializable
      *
      * @param string $action
      */
-    public function setAction(string $action)
+    public function setAction($action)
     {
         $this->action = trim($action);
     }
@@ -109,7 +109,7 @@ class Span extends TraceableEvent implements \JsonSerializable
      *
      * @param string $type
      */
-    public function setType(string $type)
+    public function setType($type)
     {
         $this->type = trim($type);
     }

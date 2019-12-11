@@ -41,7 +41,7 @@ class TransactionsStore extends Store
      *
      * @return mixed: \Zuams\Events\Transaction | null
      */
-    public function fetch(string $name)
+    public function fetch($name)
     {
         return isset($this->store[$name]) ? $this->store[$name] : null;
     }
