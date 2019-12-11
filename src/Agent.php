@@ -229,13 +229,13 @@ class Agent
      *
      * @link http://php.net/manual/en/class.throwable.php
      *
-     * @param \Throwable  $thrown
+     * @param \Exception  $thrown
      * @param array       $context, Def: []
      * @param Transaction $parent, Def: null
      *
      * @return void
      */
-    public function captureThrowable(\Throwable $thrown, array $context = [], $parent = null)
+    public function captureThrowable(\Exception $thrown, array $context = [], $parent = null)
     {
         $this->putEvent($this->factory()->newError($thrown, array_replace_recursive($this->sharedContext, $context), $parent));
     }

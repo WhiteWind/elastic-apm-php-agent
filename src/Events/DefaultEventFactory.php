@@ -7,7 +7,7 @@ final class DefaultEventFactory implements EventFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function newError(\Throwable $throwable, array $contexts, Transaction $parent = null)
+    public function newError(\Exception $throwable, array $contexts, Transaction $parent = null)
     {
         return new Error($throwable, $contexts, $parent);
     }

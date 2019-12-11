@@ -16,15 +16,15 @@ class Error extends EventBean implements \JsonSerializable
      *
      * @link http://php.net/manual/en/class.throwable.php
      *
-     * @var Throwable
+     * @var \Exception
      */
     private $throwable;
 
     /**
-     * @param Throwable $throwable
+     * @param \Exception $throwable
      * @param array $contexts
      */
-    public function __construct(\Throwable $throwable, array $contexts, Transaction $transaction = null)
+    public function __construct(\Exception $throwable, array $contexts, Transaction $transaction = null)
     {
         parent::__construct($contexts, $transaction);
         $this->throwable = $throwable;

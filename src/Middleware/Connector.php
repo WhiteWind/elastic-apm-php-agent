@@ -61,7 +61,7 @@ class Connector
             'timeout' => $this->config->get('timeout'),
         ];
 
-        $httpClientConfig = $this->config->get('httpClient') ? $httpClientConfig : [];
+        $httpClientConfig = $this->config->get('httpClient') ?: [];
 
         $this->client = new Client(array_merge($httpClientDefaults, $httpClientConfig));
     }

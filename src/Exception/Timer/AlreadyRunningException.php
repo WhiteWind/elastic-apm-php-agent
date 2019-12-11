@@ -6,7 +6,7 @@ namespace Zuams\Exception\Timer;
  */
 class AlreadyRunningException extends \Exception {
 
-  public function __construct( $message = '', $code = 0, \Throwable $previous = NULL ) {
+  public function __construct( $message = '', $code = 0, \Exception $previous = NULL ) {
     parent::__construct( 'Can\'t start a timer which is already running.', $code, $previous );
   }
 
