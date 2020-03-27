@@ -302,6 +302,7 @@ class EventBean
      */
     final protected function generateRandomBitsInHex($bits)
     {
+        $str = '';
         for ($i = 0; $i < $bits/8; $i++)
             $str .= chr(mt_rand(0, 255));
         return bin2hex($str);
