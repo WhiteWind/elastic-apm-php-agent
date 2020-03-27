@@ -105,6 +105,17 @@ class Transaction extends TraceableEvent implements \JsonSerializable
     }
 
     /**
+     * Get the parent Transaction Id
+     * This is self Id
+     *
+     * @return string
+     */
+    public function getTransactionId()
+    {
+        return $this->getId();
+    }
+
+    /**
     * Get the Summary of this Transaction
     *
     * @return array

@@ -31,6 +31,14 @@ class EventBean
      */
     private $traceId;
 
+
+    /**
+     * Id of parent transaction
+     *
+     * @var string
+     */
+    private $transactionId = null;
+
     /**
      * Id of parent span or parent transaction
      *
@@ -151,6 +159,15 @@ class EventBean
     }
 
     /**
+     * Get the parent Transaction Id
+     * @return string
+     */
+    public function getTransactionId()
+    {
+        return $this->transactionId;
+    }
+
+    /**
      * Get the Offset between the Parent's timestamp and this Event's
      *
      * @return int
@@ -179,6 +196,7 @@ class EventBean
      */
     public function setParent(EventBean $parent)
     {
+        $this->transactionId = $parent->getTransactionId();
         $this->setParentId($parent->getId());
         $this->setTraceId($parent->getTraceId());
     }
@@ -270,7 +288,7 @@ class EventBean
 
         return [
             'http_version' => substr($SERVER_PROTOCOL, strpos($SERVER_PROTOCOL, '/')),
-            'method'       => 'cli',
+            'method'       => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'cli',
             'socket'       => [
                 'remote_address' => $remote_address,
                 'encrypted'      => isset($_SERVER['HTTPS'])
@@ -278,14 +296,14 @@ class EventBean
             'response' => $this->contexts['response'],
             'url'          => [
                 'protocol' => $http_or_https,
-                'hostname' => '',
-                'port'     => 0,
-                'pathname' => '',
-                'search'   => '',
-                'full' => isset($_SERVER['HTTP_HOST']) ? $http_or_https . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : '',
+                'hostname' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '',
+                'port'     => isset($_SERVER['SERVER_PORT']) ? intval($_SERVER['SERVER_PORT']) : 0,
+                'pathname' => isset($_SERVER['DOCUMENT_URI']) ? substr($_SERVER['DOCUMENT_URI'], 0, 1024) : '',
+                'search'   => isset($_SERVER['QUERY_STRING']) ? substr($_SERVER['QUERY_STRING'], 0, 1024) : '',
+                'full' => isset($_SERVER['HTTP_HOST']) ? substr($http_or_https . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 0, 1024) : '',
             ],
             'headers' => [
-                'user-agent' => '',
+                'user-agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
                 'cookie'     => '',
             ],
             'env' => (object)$this->getEnv(),

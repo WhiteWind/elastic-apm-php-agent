@@ -150,7 +150,7 @@ class Span extends TraceableEvent implements \JsonSerializable
         return [
             'span' => [
                 'id'             => $this->getId(),
-                'transaction_id' => $this->getParentId(),
+                'transaction_id' => $this->getTransactionId(),
                 'trace_id'       => $this->getTraceId(),
                 'parent_id'      => $this->getParentId(),
                 'type'           => $this->type,
