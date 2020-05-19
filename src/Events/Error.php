@@ -51,6 +51,7 @@ class Error extends EventBean implements \JsonSerializable
                     'type'       => get_class($this->throwable),
                     'code'       => $this->throwable->getCode(),
                     'stacktrace' => $this->mapStacktrace(),
+                    'handled'    => false
                 ],
             ]
         ];
@@ -63,12 +64,28 @@ class Error extends EventBean implements \JsonSerializable
      */
     final private function mapStacktrace()
     {
-        $stacktrace = [];
+        $stacktrace = [
+            [
+                'filename' => basename($this->throwable->getFile()),
+                'abs_path' => $this->throwable->getFile(),
+                'lineno' => $this->throwable->getLine()
+            ]
+        ];
+        $i = 0;
 
         foreach ($this->throwable->getTrace() as $trace) {
             $item = [
               'function' => '(closure)'
             ];
+
+            if (isset($trace['function']) === true)
+                $stacktrace[$i]['function'] = $trace['function'].'()';
+
+            if (isset($trace['class']) === true) {
+                $stacktrace[$i]['classname'] = $trace['class'];
+                $stacktrace[$i]['module'] = $trace['class'];
+                $stacktrace[$i]['function'] = $trace['class'] . (isset($trace['type'])?$trace['type']:'::') . $stacktrace[$i]['function'];
+            }
 
             if (isset($trace['line']) === true) {
                 $item['lineno'] = $trace['line'];
@@ -81,13 +98,6 @@ class Error extends EventBean implements \JsonSerializable
                 ];
             }
 
-            if (isset($trace['class']) === true) {
-                $item['module'] = $trace['class'];
-            }
-            if (isset($trace['type']) === true) {
-                $item['type'] = $trace['type'];
-            }
-
             if (!isset($item['lineno'])) {
                 $item['lineno'] = 0;
             }
@@ -96,6 +106,7 @@ class Error extends EventBean implements \JsonSerializable
                 $item['filename'] = '(anonymous)';
             }
 
+            $i++;
             array_push($stacktrace, $item);
         }
 
