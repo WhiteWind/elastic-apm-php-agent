@@ -159,7 +159,7 @@ class Span extends TraceableEvent implements \JsonSerializable
                 'duration'       => $this->duration,
                 'name'           => $this->getName(),
                 'stacktrace'     => $this->stacktrace,
-                'sync'           => false,
+                'sync'           => true,
                 'timestamp'      => $this->getTimestamp(),
             ]
         ];
